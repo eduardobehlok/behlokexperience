@@ -1,10 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My Trip Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behlok Experience 2026</title>
+
+<!-- Flatpickr CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<style>
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "San Francisco", sans-serif;
+    background-color: #ffffff;
+    color: #1d1d1f;
+    text-align: center;
+}
+
+.hero {
+    height: 90vh;
+    background-image: url('cover.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 600;
+    background: rgba(0,0,0,0.4);
+    padding: 20px 40px;
+    border-radius: 20px;
+}
+
+.section {
+    padding: 100px 20px;
+}
+
+.section h2 {
+    font-size: 42px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+form {
+    max-width: 500px;
+    margin: auto;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    font-size: 16px;
+    border-radius: 12px;
+    border: 1px solid #d2d2d7;
+}
+
+button {
+    margin-top: 30px;
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 14px;
+    border: none;
+    background-color: #0071e3;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
+
+.range-entry {
+    margin-top: 15px;
+}
+</style>
 </head>
+
 <body>
-    <h1>Hello World 🌍</h1>
-    <p>This is our upcoming trip website!</p>
+
+<div class="hero">
+    <h1>The Next Trip is Coming ✨</h1>
+</div>
+
+<div class="section">
+    <h2>Are you ready for the Behlok Experience 2026?</h2>
+
+    <form>
+
+        <label>Your Name</label>
+        <input type="text" required>
+
+        <label>Will you join this year?</label>
+        <select>
+            <option>Yes 🚀</option>
+            <option>No 😢</option>
+        </select>
+
+        <label>Dates you CANNOT join</label>
+        <div id="dateRanges"></div>
+
+        <button type="button" onclick="addDateRange()">Add another unavailable range</button>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+function addDateRange() {
+    const container = document.getElementById("dateRanges");
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "range-entry";
+    container.appendChild(input);
+
+    flatpickr(input, {
+        mode: "range",
+        dateFormat: "d/m/Y"
+    });
+}
+
+// Add first range automatically
+addDateRange();
+</script>
+
 </body>
 </html>
