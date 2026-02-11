@@ -132,17 +132,95 @@ button:hover {
 
 /* DASHBOARD */
 
-.dashboard {
-    margin-top: 60px;
-    padding: 40px;
-    background: white;
-    border-radius: 30px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-}
+
 
 .range-entry {
     margin-top: 10px;
 }
+.instructions {
+    margin-bottom: 50px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #3a3a3c;
+}
+
+.instructions strong {
+    font-weight: 600;
+}
+
+.holiday-list {
+    margin-top: 20px;
+    background: white;
+    padding: 25px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    text-align: left;
+}
+
+.holiday-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.holiday-list li {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.holiday-list li:last-child {
+    border-bottom: none;
+}
+
+/* ROADMAP SECTION */
+
+.roadmap {
+    background: #ffffff;
+    border-radius: 40px;
+    padding: 120px 40px;
+    margin-top: 80px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+    margin-top: 60px;
+}
+
+.step {
+    text-align: left;
+    padding: 30px;
+    border-radius: 30px;
+    transition: all 0.4s ease;
+    background: #f9f9fb;
+}
+
+.step:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+}
+
+.step-number {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0071e3;
+    margin-bottom: 15px;
+}
+
+.step h3 {
+    font-size: 22px;
+    margin: 0 0 10px 0;
+}
+
+.step p {
+    font-size: 16px;
+    color: #6e6e73;
+    margin: 0;
+}
+
+
 </style>
 </head>
 
@@ -153,8 +231,65 @@ button:hover {
     <div class="countdown" id="countdown"></div>
 </div>
 
+<div class="section roadmap">
+    <h2>The Road to Behlok Experience 2026</h2>
+
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">01</div>
+            <h3>Confirm the Crew</h3>
+            <p>Identify who is ready for the experience.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">02</div>
+            <h3>Align the Calendars</h3>
+            <p>Review availability and detect the optimal weekends.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">03</div>
+            <h3>Select the Perfect Date</h3>
+            <p>Vote and lock the most strategic weekend.</p>
+        </div>
+
+        <div class="step">
+            <div class="step-number">04</div>
+            <h3>Reveal the Destination</h3>
+            <p>Endless discussions until a decision is made.</p>
+        </div>
+        
+         <div class="step">
+            <div class="step-number">05</div>
+            <h3>Avoid disturbance</h3>
+            <p>Prevent Murilo from interfering with our plans.</p>
+        </div>
+    </div>
+</div>
+
 <div class="section" id="formSection">
     <h2>Are you ready for the Behlok Experience 2026?</h2>
+    
+    <div class="instructions">
+    <p><strong>The trip always takes place from Friday until Sunday.</strong></p>
+    <p>Please inform your <strong>NOT AVAILABLE</strong> weekends for the complete year.</p>
+    <p>Below are the 2026 public holidays to help your planning:</p>
+
+    <div class="holiday-list">
+        <ul>
+            <li>Thu, 02.04.2026 – Gründonnerstag</li>
+            <li>Fri, 03.04.2026 – Karfreitag</li>
+            <li>Mon, 06.04.2026 – Ostermontag</li>
+            <li>Fri, 01.05.2026 – Tag der Arbeit</li>
+            <li>Thu, 14.05.2026 – Christi Himmelfahrt</li>
+            <li>Mon, 25.05.2026 – Pfingstmontag</li>
+            <li>Thu, 04.06.2026 – Fronleichnam</li>
+            <li>Sat, 03.10.2026 – Tag der Deutschen Einheit</li>
+<li>Sun, 01.11.2026 – Allerheiligen</li>
+        </ul>
+    </div>
+</div>
+
 
     <form id="tripForm"
           action="https://docs.google.com/forms/d/e/1FAIpQLSdUgaVak76yMm5qZXlQ5-sWj4-LtMovNjHRQ6zQ_Z5cYKvTbQ/formResponse"
@@ -182,16 +317,15 @@ button:hover {
         🚀 Thank you. The experience begins.
     </div>
 
-    <div class="dashboard">
-        <h3>Availability Dashboard Preview</h3>
-        <p>All responses are stored in Google Sheets.</p>
-        <p>You can analyze overlaps and pick the optimal trip window.</p>
-    </div>
+
 </div>
 
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+
 
 <script>
 let dateInputs = [];
