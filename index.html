@@ -8,42 +8,72 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 <style>
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "San Francisco", sans-serif;
-    background-color: #ffffff;
+    background-color: #f5f5f7;
     color: #1d1d1f;
     text-align: center;
 }
 
+/* HERO */
+
 .hero {
-    height: 90vh;
+    height: 100vh;
     background-image: url('cover.jpeg');
     background-size: cover;
     background-position: center;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     color: white;
 }
 
 .hero h1 {
-    font-size: 48px;
+    font-size: 52px;
     font-weight: 600;
+    backdrop-filter: blur(20px);
     background: rgba(0,0,0,0.4);
-    padding: 20px 40px;
-    border-radius: 20px;
+    padding: 25px 50px;
+    border-radius: 30px;
+    margin: 0;
 }
 
+/* COUNTDOWN */
+
+.countdown {
+    margin-top: 30px;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+/* SECTION */
+
 .section {
-    padding: 100px 20px;
+    padding: 120px 20px;
+    max-width: 900px;
+    margin: auto;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s ease;
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .section h2 {
     font-size: 42px;
-    font-weight: 600;
     margin-bottom: 40px;
 }
+
+/* FORM */
 
 form {
     max-width: 500px;
@@ -59,27 +89,55 @@ label {
 
 input, select {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     margin-top: 8px;
     font-size: 16px;
-    border-radius: 12px;
+    border-radius: 16px;
     border: 1px solid #d2d2d7;
+    background: white;
 }
 
 button {
-    margin-top: 20px;
+    margin-top: 25px;
     width: 100%;
-    padding: 15px;
+    padding: 16px;
     font-size: 18px;
-    border-radius: 14px;
+    border-radius: 20px;
     border: none;
     background-color: #0071e3;
     color: white;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
     background-color: #005bb5;
+    transform: scale(1.02);
+}
+
+/* SUCCESS MESSAGE */
+
+.success {
+    display: none;
+    margin-top: 40px;
+    font-size: 24px;
+    color: #34c759;
+    animation: fadeIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* DASHBOARD */
+
+.dashboard {
+    margin-top: 60px;
+    padding: 40px;
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
 }
 
 .range-entry {
@@ -92,38 +150,46 @@ button:hover {
 
 <div class="hero">
     <h1>The Next Trip is Coming ✨</h1>
+    <div class="countdown" id="countdown"></div>
 </div>
 
-<div class="section">
+<div class="section" id="formSection">
     <h2>Are you ready for the Behlok Experience 2026?</h2>
 
-    <form action="https://docs.google.com/forms/d/e/1FAIpQLSdUgaVak76yMm5qZXlQ5-sWj4-LtMovNjHRQ6zQ_Z5cYKvTbQ/formResponse"
+    <form id="tripForm"
+          action="https://docs.google.com/forms/d/e/1FAIpQLSdUgaVak76yMm5qZXlQ5-sWj4-LtMovNjHRQ6zQ_Z5cYKvTbQ/formResponse"
           method="POST"
-          target="_blank">
+          target="hidden_iframe">
 
-        <!-- NAME -->
         <label>Your Name</label>
         <input type="text" name="entry.667835221" required>
 
-        <!-- JOIN -->
         <label>Will you join this year?</label>
         <select name="entry.1381269609" required>
             <option value="Yes 🚀">Yes 🚀</option>
             <option value="No 😢">No 😢</option>
         </select>
 
-        <!-- DATE RANGES -->
         <label>Dates you CANNOT join</label>
         <div id="dateRanges"></div>
-
-        <!-- Hidden field that sends all ranges to Google -->
         <input type="hidden" id="datesField" name="entry.557182653">
 
         <button type="button" onclick="addDateRange()">Add another unavailable range</button>
-
         <button type="submit">Submit</button>
     </form>
+
+    <div class="success" id="successMessage">
+        🚀 Thank you. The experience begins.
+    </div>
+
+    <div class="dashboard">
+        <h3>Availability Dashboard Preview</h3>
+        <p>All responses are stored in Google Sheets.</p>
+        <p>You can analyze overlaps and pick the optimal trip window.</p>
+    </div>
 </div>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -147,15 +213,45 @@ function addDateRange() {
 
 addDateRange();
 
-document.querySelector("form").addEventListener("submit", function() {
+/* Silent Submit */
+document.getElementById("tripForm").addEventListener("submit", function() {
+
     let allRanges = [];
     dateInputs.forEach(input => {
-        if (input.value) {
-            allRanges.push(input.value);
-        }
+        if (input.value) allRanges.push(input.value);
     });
 
     document.getElementById("datesField").value = allRanges.join(" | ");
+
+    setTimeout(() => {
+        document.getElementById("successMessage").style.display = "block";
+        document.getElementById("tripForm").reset();
+    }, 1000);
+});
+
+/* Countdown Timer */
+const tripDate = new Date("2026-07-01");
+const countdownEl = document.getElementById("countdown");
+
+setInterval(() => {
+    const now = new Date();
+    const diff = tripDate - now;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    countdownEl.innerHTML = days + " days until lift-off 🚀";
+}, 1000);
+
+/* Fade-in on scroll */
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+        }
+    });
+});
+
+document.querySelectorAll(".section").forEach(section => {
+    observer.observe(section);
 });
 </script>
 
