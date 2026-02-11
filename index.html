@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Behlok Experience 2026</title>
 
-<!-- Flatpickr CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 <style>
@@ -68,7 +67,7 @@ input, select {
 }
 
 button {
-    margin-top: 30px;
+    margin-top: 20px;
     width: 100%;
     padding: 15px;
     font-size: 18px;
@@ -84,7 +83,7 @@ button:hover {
 }
 
 .range-entry {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -98,19 +97,27 @@ button:hover {
 <div class="section">
     <h2>Are you ready for the Behlok Experience 2026?</h2>
 
-    <form>
+    <form action="https://docs.google.com/forms/d/e/1FAIpQLSdUgaVak76yMm5qZXlQ5-sWj4-LtMovNjHRQ6zQ_Z5cYKvTbQ/formResponse"
+          method="POST"
+          target="_blank">
 
+        <!-- NAME -->
         <label>Your Name</label>
-        <input type="text" required>
+        <input type="text" name="entry.667835221" required>
 
+        <!-- JOIN -->
         <label>Will you join this year?</label>
-        <select>
-            <option>Yes 🚀</option>
-            <option>No 😢</option>
+        <select name="entry.1381269609" required>
+            <option value="Yes 🚀">Yes 🚀</option>
+            <option value="No 😢">No 😢</option>
         </select>
 
+        <!-- DATE RANGES -->
         <label>Dates you CANNOT join</label>
         <div id="dateRanges"></div>
+
+        <!-- Hidden field that sends all ranges to Google -->
+        <input type="hidden" id="datesField" name="entry.557182653">
 
         <button type="button" onclick="addDateRange()">Add another unavailable range</button>
 
@@ -118,10 +125,11 @@ button:hover {
     </form>
 </div>
 
-<!-- Flatpickr JS -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <script>
+let dateInputs = [];
+
 function addDateRange() {
     const container = document.getElementById("dateRanges");
     const input = document.createElement("input");
@@ -133,10 +141,22 @@ function addDateRange() {
         mode: "range",
         dateFormat: "d/m/Y"
     });
+
+    dateInputs.push(input);
 }
 
-// Add first range automatically
 addDateRange();
+
+document.querySelector("form").addEventListener("submit", function() {
+    let allRanges = [];
+    dateInputs.forEach(input => {
+        if (input.value) {
+            allRanges.push(input.value);
+        }
+    });
+
+    document.getElementById("datesField").value = allRanges.join(" | ");
+});
 </script>
 
 </body>
